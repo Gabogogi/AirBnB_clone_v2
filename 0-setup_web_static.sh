@@ -13,11 +13,6 @@ for dir in "${DIRS[@]}"; do
     fi
 done
 
-echo "
-Go tell to Sparta, thou who passest by,
-that here, obedient to her laws, we lie."
->> /data/web_static/releases/test/index.html
-
 link_path="/data/web_static/current"
 target_path="/data/web_static/releases/test"
 ln -sf "$target_path" "$link_path"
@@ -26,19 +21,18 @@ ln -sf "$target_path" "$link_path"
 chown -R ubuntu /data/
 chgrp -R ubuntu /data/
 
-# Set up nginx to serve the content of /data/web_static/current/ to
-# the URL path /hbnb_static
+echo "Go tell to Sparta, thou who passest by, that here, obedient to her laws, we lie" > /data/web_static/releases/test/index.html
 
 # Create file to be served in case of an error 404
 echo "Ceci n'est pas une page" > /etc/nginx/html/404.html
 
 # Create the default index page
-echo "Hello World!" > /etc/nginx/html;
+echo "Hello World!" > /etc/nginx/html/index.html;
 
 echo "server {
     listen 80;
     listen [::]:80 default_server;
-    add_header X-Served-By $hostname;
+    add_header X-Served-By $HOSTNAME;
     root /etc/nginx/html;
 
     
@@ -62,3 +56,4 @@ echo "server {
 }" > /etc/nginx/sites-available/default
 
 service nginx restart
+
