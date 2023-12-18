@@ -8,8 +8,12 @@ import os
 
 @task
 def do_clean(c, number=0):
-    """
-    Delete out-of-date archives from the local host.
+     """Delete out-of-date archives.
+    Args:
+        number (int): The number of archives to keep.
+    If number is 0 or 1, keeps only the most recent archive. If
+    number is 2, keeps the most and second-most recent archives,
+    etc.
     """
     # Get list of relative pathnnames of archives.
     archives = [f"versions/{fname}" for fname in os.listdir("versions")]
