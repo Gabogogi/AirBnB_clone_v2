@@ -1,25 +1,24 @@
 #!/usr/bin/python3
 # Fabfile to generates a .tgz archive from the contents of web_static.
 from datetime import datetime
-from fabric.api import local
+from fabric import task
 import os
 
 
-def do_pack():
-    '''
-    Generate a .tgz archive from the contents of the web_static folder.
-    '''
-    if os.path.isdir("versions") is False:
-        if local("mkdir -p versions").failed is True:
-            return None
+@task
+def do_pack(ctx):
+    """Compress the pwd into an archive in the versions"""
+    print("Hello world")
+    if not os.path.isdir("versions"):
+        os.mkdir("versions")
+    dt = datetime.now()
+    archive_name = f"web_static_{dt.year}{dt.month}{dt.day}{dt.hour}"\
+                   f"{dt.minute}{dt.second}.tgz"
+    print(archive_name)
+    excludes = "--exclude=versions --exclude=.git --exclude=.gitignore"
+    # Compress all files in the pwd to the versions/ dir.
+    result = ctx.run(f"tar {excludes} -czvf versions/{archive_name} .")
+    if not result.ok:
+        return False
 
-    now = datetime.utcnow()
-    ar_name = "versions/web_static_{}.tgz".format(now.strftime("%Y%m%d%H%M%S"))
-
-    tar_command = "tar -cvzf {} web_static".format(ar_name)
-    result = local(tar_command)
-
-    if result.failed:
-        return None
-    else:
-        return ar_name
+    return "versions/" + archive_name 
