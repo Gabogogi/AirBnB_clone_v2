@@ -43,10 +43,10 @@ def python_is_cool(text="is cool"):
     return f'Python {new_text}'
 
 
-@app.route('/number/<n>', strict_slashes=False)
+@app.route('/number/<int:n>', strict_slashes=False)
 def number_display(n):
-    if isinstance(int(n), int):
-        return f'{n} is a number'
+    '''checks if no in route is integer'''
+    return f'{n} is a number'
 
 
 if __name__ == "__main__":
