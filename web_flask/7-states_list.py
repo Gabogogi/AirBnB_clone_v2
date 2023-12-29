@@ -17,8 +17,11 @@ def teardown_session(exception):
 @appp.route('/states_list', strict_slashes=False)
 def display_states():
     '''List all states '''
-    states = storage.all("State")
+    states = list(storage.all(State).values())
+    # Sort states by name alphabetically in ascending order
+    states = sorted(states, key=lambda state: state.name)
     return render_template("7-states_list.html", states=states)
+
 
 
 if __name__ == "__main__":
