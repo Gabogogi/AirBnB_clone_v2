@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 """ Script that runs an app with Flask framework """
 from flask import Flask, render_template
-from models import storage
-from models.state import State
+#from models import storage
+#from models.state import State
 
 
 app = Flask(__name__)
@@ -14,7 +14,7 @@ def teardown_session(exception):
     storage.close()
 
 
-@appp.route('/states_list', strict_slashes=False)
+@app.route('/states_list', strict_slashes=False)
 def display_states():
     '''List all states '''
     states = list(storage.all(State).values())
